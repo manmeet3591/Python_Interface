@@ -47,36 +47,6 @@ def write2nc_4d(file, nlats, nlons, nlevs, nrecs, press_out, temp_out):
 		press[nrec,:,::] = press_out[nrec,:,::]
 		temp[nrec,:,::] = temp_out[nrec,:,::]
 	ncfile.close()
-
-def write2nc_3d(lon, lat, lev, out, out_name, dimx_name, dimy_name, dimz_name, file_name ):
-	nx = out.shape[0]
-	ny = out.shape[1]
-	nz = out.shape[2]
-	ncfile = Dataset(file_name,'w') 
-	ncfile.createDimension(dimx_name, nx)
-	ncfile.createDimension(dimy_name, ny)
-	ncfile.createDimension(dimz_name, nz)
-	data_lon = ncfile.createVariable("lon", "f4", ("lon",))
-	data_lat = ncfile.createVariable("lat", "f4", ("lat",))
-	data_lev = ncfile.createVariable("lev", "f4", ("lat",))
-	data = ncfile.createVariable(out_name, dtype('float').char,(dimx_name, dimy_name, dimz_name))
-
-	data_lon.units = 'K/hr'
-	data_lon.long_name = 'longitude' 
-	data_lat.units = 'degrees'
-	data_lat.long_name = 'latitude' 
-	data.units = 'K/hr'
-	data.long_name = '2H25 latent heating (SLH)'
-	data._FillValue = '-999.f'
-	data.missing_value = '-999.f'
-	data.valid_range = '-400.f, -400.f'
-
-	data_lon[:] = lon
-	data_lat[:] = lat
-	data_lev[:] = lev
-	data[:] = out
-	ncfile.close()
-
 #---testing 
 if __name__ == "__main__":
 	lon = np.empty((4))
